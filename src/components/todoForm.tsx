@@ -1,10 +1,10 @@
-import { use } from "react";
+import { useContext } from "react";
 import Button from "./button";
 import AppContext from "@/context/appContext";
 
 export default function TodoForm() {
-  const context = use(AppContext);
-  const { value } = context;
+  const context = useContext(AppContext);
+  const value = context?.value;
   return (
     <div className="m-2 p-2">
       <h1>Context value is {value}</h1>
