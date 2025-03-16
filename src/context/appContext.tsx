@@ -8,7 +8,7 @@ interface AppContext {
 const AppContext = createContext<AppContext | undefined>(undefined);
 
 export const AppProvider = ({ children }: { children: ReactNode }) => {
-  const [value, setValue] = useState<string>("");
+  const [value, setValue] = useState<string>("test");
 
   return (
     <AppContext.Provider value={{ value, setValue }}>
