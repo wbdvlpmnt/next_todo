@@ -58,12 +58,12 @@ function ListCard({
         </p>
       </div>
       <div className="flex flex-row gap-4">
-        <Button
+        {/* <Button
           text="Edit"
           buttonType="button"
           color="bg-orange-400"
           handleClick={() => {}}
-        />
+        /> */}
         <Button
           text="Delete"
           buttonType="button"
