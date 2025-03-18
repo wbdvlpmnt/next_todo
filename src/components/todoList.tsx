@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Button from "./button";
 
 interface Todo {
   title: string;
@@ -26,14 +27,50 @@ export default function TodoList() {
   }, []);
 
   return (
-    <div>
-      <ul>
+    <div className="m-2 p-2">
+      <ul className="flex flex-col gap-4  h-100 overflow-auto">
         {todos.map((todo, index) => (
-          <li key={index}>
-            {todo.title} - {todo.description}
-          </li>
+          <ListCard todo={todo} index={index} />
         ))}
       </ul>
     </div>
+  );
+}
+
+function ListCard({
+  todo,
+  index,
+}: {
+  todo: Todo;
+  index: number;
+}): React.JSX.Element {
+  return (
+    <li
+      className="flex flex-row justify-between p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
+      key={index}
+    >
+      <div>
+        <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+          {todo.title}
+        </h5>
+        <p className="font-normal text-gray-700 dark:text-gray-400">
+          {todo.description}
+        </p>
+      </div>
+      <div className="flex flex-row gap-4">
+        <Button
+          text="Edit"
+          buttonType="button"
+          color="bg-orange-400"
+          handleClick={() => {}}
+        />
+        <Button
+          text="Delete"
+          buttonType="button"
+          handleClick={() => {}}
+          color="bg-red-400"
+        />
+      </div>
+    </li>
   );
 }
