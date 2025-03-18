@@ -4,7 +4,6 @@ import AppContext from "@/context/appContext";
 
 export default function TodoForm() {
   const context = useContext(AppContext);
-  const value = context?.value;
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -24,6 +23,8 @@ export default function TodoForm() {
         console.error(response);
         return;
       }
+
+      context?.setTodos((prev) => [...prev, { title, description }]);
 
       setTitle("");
       setDescription("");

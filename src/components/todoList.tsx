@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Button from "./button";
-
-interface Todo {
-  title: string;
-  description: string;
-}
+import { Todo } from "@/types/types";
+import AppContext from "@/context/appContext";
 
 export default function TodoList() {
+  const context = useContext(AppContext);
+  const todosContext = context?.todos;
+
   const [todos, setTodos] = useState<Todo[]>([]);
 
   useEffect(() => {
@@ -24,7 +24,7 @@ export default function TodoList() {
     };
 
     fetchTodos();
-  }, []);
+  }, [todosContext]);
 
   return (
     <div className="m-2 p-2">

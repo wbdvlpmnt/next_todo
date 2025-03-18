@@ -1,17 +1,18 @@
+import { Todo } from "@/types/types";
 import React, { createContext, useState, ReactNode } from "react";
 
 interface AppContext {
-  value: string;
-  setValue: React.Dispatch<React.SetStateAction<string>>;
+  todos: Todo[];
+  setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
 }
 
 const AppContext = createContext<AppContext | undefined>(undefined);
 
 export const AppProvider = ({ children }: { children: ReactNode }) => {
-  const [value, setValue] = useState<string>("test");
+  const [todos, setTodos] = useState<Todo[]>([]);
 
   return (
-    <AppContext.Provider value={{ value, setValue }}>
+    <AppContext.Provider value={{ todos, setTodos }}>
       {children}
     </AppContext.Provider>
   );
