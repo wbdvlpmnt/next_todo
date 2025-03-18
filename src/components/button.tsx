@@ -11,7 +11,7 @@ export default function Button({
   handleClick,
   color,
 }: ButtonProps) {
-  const classNames = `block border-2 border-zinc-500 rounded-md p-2 mt-4 cursor-pointer ${color}`;
+  const classNames = `block border-2 border-zinc-500 rounded-md p-2 mt-4 cursor-pointer ${color} max-h-12`;
   return (
     <button
       type={buttonType}

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
-import Button from "./button";
 import { Todo } from "@/types/types";
 import AppContext from "@/context/appContext";
+import { ListCard } from "./ListCard";
 
 export default function TodoList() {
   const context = useContext(AppContext);
@@ -34,43 +34,5 @@ export default function TodoList() {
         ))}
       </ul>
     </div>
-  );
-}
-
-function ListCard({
-  todo,
-  index,
-}: {
-  todo: Todo;
-  index: number;
-}): React.JSX.Element {
-  return (
-    <li
-      className="flex flex-row justify-between p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
-      key={index}
-    >
-      <div>
-        <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-          {todo.title}
-        </h5>
-        <p className="font-normal text-gray-700 dark:text-gray-400">
-          {todo.description}
-        </p>
-      </div>
-      <div className="flex flex-row gap-4">
-        {/* <Button
-          text="Edit"
-          buttonType="button"
-          color="bg-orange-400"
-          handleClick={() => {}}
-        /> */}
-        <Button
-          text="Delete"
-          buttonType="button"
-          handleClick={() => {}}
-          color="bg-red-400"
-        />
-      </div>
-    </li>
   );
 }
