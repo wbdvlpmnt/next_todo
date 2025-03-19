@@ -12,12 +12,18 @@ export function ListCard({
 }): React.JSX.Element {
   const context = useContext(AppContext);
 
-  async function handleEdit(id: number) {
-    console.log("Edit todo", id);
-    context?.setIdToEdit(id);
+  async function handleEdit(id: number | undefined) {
+    if (id) {
+      console.log("Edit todo", id);
+      context?.setIdToEdit(id);
+    }
   }
 
   async function handleDelete(id: number) {
+    if (id === undefined) {
+      console.error("No id provided to delete todo");
+      return;
+    }
     try {
       const response = await fetch("/api/deleteTodos", {
         method: "POST",
@@ -56,20 +62,12 @@ export function ListCard({
           text="Edit"
           buttonType="button"
           color="bg-orange-400"
-          handleClick={() => {
-            {
-              todo.id !== undefined && handleEdit(todo.id);
-            }
-          }}
+          handleClick={() => handleEdit(todo.id)}
         />
         <Button
           text="Delete"
           buttonType="button"
-          handleClick={() => {
-            {
-              todo.id !== undefined && handleDelete(todo.id);
-            }
-          }}
+          handleClick={() => handleDelete(todo.id)}
           color="bg-red-400"
         />
       </div>
