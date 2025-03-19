@@ -12,6 +12,11 @@ export function ListCard({
 }): React.JSX.Element {
   const context = useContext(AppContext);
 
+  async function handleEdit(id: number) {
+    console.log("Edit todo", id);
+    context?.setIdToEdit(id);
+  }
+
   async function handleDelete(id: number) {
     try {
       const response = await fetch("/api/deleteTodos", {
@@ -35,7 +40,7 @@ export function ListCard({
 
   return (
     <li
-      className="flex flex-row justify-between p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
+      className="p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
       key={index}
     >
       <div>
@@ -47,12 +52,16 @@ export function ListCard({
         </p>
       </div>
       <div className="flex flex-row gap-4">
-        {/* <Button
-            text="Edit"
-            buttonType="button"
-            color="bg-orange-400"
-            handleClick={() => {}}
-          /> */}
+        <Button
+          text="Edit"
+          buttonType="button"
+          color="bg-orange-400"
+          handleClick={() => {
+            {
+              todo.id !== undefined && handleEdit(todo.id);
+            }
+          }}
+        />
         <Button
           text="Delete"
           buttonType="button"

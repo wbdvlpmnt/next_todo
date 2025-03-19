@@ -1,22 +1,47 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Button from "./button";
 import AppContext from "@/context/appContext";
 
 export default function TodoForm() {
   const context = useContext(AppContext);
-
+  const idToEdit = context?.idToEdit;
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
+  useEffect(() => {
+    console.log("editing", idToEdit);
+    if (idToEdit) {
+      const todo = context?.todos.find((todo) => todo.id === idToEdit);
+      console.log("todo", todo);
+      if (todo) {
+        console.log("setting title and description", todo);
+        setTitle(todo.title);
+        setDescription(todo.description);
+      }
+    }
+  }, [idToEdit]);
+
   async function handleAddTodo() {
     try {
-      const response = await fetch("/api/saveTodos", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ title, description }),
-      });
+      let response;
+      if (idToEdit) {
+        console.log("editing todo", idToEdit, title, description);
+        response = await fetch("/api/editTodos", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ id: idToEdit, title, description }),
+        });
+      } else {
+        response = await fetch("/api/saveTodos", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ title, description }),
+        });
+      }
 
       if (!response.ok) {
         console.error("Failed to add todo");
@@ -24,10 +49,17 @@ export default function TodoForm() {
         return;
       }
 
-      context?.setTodos((prev) => [...prev, { title, description }]);
+      // Fetch the updated list of todos from the database
+      const fetchResponse = await fetch("/api/getTodos");
+      if (!fetchResponse.ok) {
+        throw new Error("Failed to fetch");
+      }
+      const data = await fetchResponse.json();
+      context?.setTodos(data.todos);
 
       setTitle("");
       setDescription("");
+      context?.setIdToEdit(null);
     } catch (error) {
       console.error("Error posting todo:", error);
     }
