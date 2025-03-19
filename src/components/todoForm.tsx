@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import Button from "./button";
 import AppContext from "@/context/appContext";
+import { Todo } from "@/types/types";
 
 export default function TodoForm() {
   const context = useContext(AppContext);
@@ -8,18 +9,30 @@ export default function TodoForm() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
+  // Local state to track the todo being edited
+  const [todoToEdit, setTodoToEdit] = useState<Todo | null>(null);
+
   useEffect(() => {
     console.log("editing", idToEdit);
+
     if (idToEdit) {
+      // Find the todo to edit only when idToEdit changes
       const todo = context?.todos.find((todo) => todo.id === idToEdit);
       console.log("todo", todo);
+
       if (todo) {
         console.log("setting title and description", todo);
         setTitle(todo.title);
         setDescription(todo.description);
+        setTodoToEdit(todo); // Track the todo being edited
       }
+    } else {
+      // Reset the form if no idToEdit is set
+      setTitle("");
+      setDescription("");
+      setTodoToEdit(null);
     }
-  }, [idToEdit]);
+  }, [idToEdit]); // Only re-run when idToEdit changes
 
   async function handleAddTodo() {
     try {
@@ -57,6 +70,7 @@ export default function TodoForm() {
       const data = await fetchResponse.json();
       context?.setTodos(data.todos);
 
+      // Reset the form
       setTitle("");
       setDescription("");
       context?.setIdToEdit(null);
