@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { createClient } from "@supabase/supabase-js";
+import { Todo } from "@/types/types";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL as string;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY as string;
@@ -7,7 +8,7 @@ const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY as string;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 type Data = {
-  todos?: [];
+  todos?: Todo[]; // Update to match the expected array type
   error?: string;
 };
 
