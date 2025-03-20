@@ -44,7 +44,6 @@ export default async function editTodos(
       throw error;
     }
 
-    // Return the updated todo
     res.status(200).json({ todos: data });
   } catch (error) {
     console.error("Error updating todo:", error);
