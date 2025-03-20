@@ -13,6 +13,10 @@ export function ListCard({
   const context = useContext(AppContext);
 
   async function handleEdit(id: number | undefined) {
+    if (id === undefined) {
+      console.error("No id provided to edit");
+      return;
+    }
     if (id) {
       console.log("Edit todo", id);
       context?.setIdToEdit(id);
