@@ -23,7 +23,7 @@ export function ListCard({
     }
   }
 
-  async function handleDelete(id: number) {
+  async function handleDelete(id: number | undefined) {
     if (id === undefined) {
       console.error("No id provided to delete todo");
       return;
