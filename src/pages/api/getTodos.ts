@@ -19,7 +19,7 @@ export default async function readTodos(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  let { data: todos, error } = await supabase.from("todos").select("*");
+  const { data: todos, error } = await supabase.from("todos").select("*");
 
   if (error) {
     console.error("Error fetching todos:", error);

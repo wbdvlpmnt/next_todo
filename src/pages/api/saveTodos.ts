@@ -7,7 +7,7 @@ const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY as string;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 type Data = {
-  todos: any[];
+  todos: [];
 };
 
 export default async function saveTodos(
@@ -17,7 +17,7 @@ export default async function saveTodos(
   try {
     const { title, description } = req.body;
 
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from("todos")
       .insert([{ title: title, description: description }])
       .select();

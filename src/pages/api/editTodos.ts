@@ -7,7 +7,7 @@ const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_KEY as string;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 type Data = {
-  todos?: any[];
+  todos?: [];
   error?: string;
 };
 
@@ -26,7 +26,6 @@ export default async function editTodos(
 
     // Destructure and validate the request body
     const { id, title, description } = req.body;
-    console.log(id, title, description);
     if (!id || !title || !description) {
       return res
         .status(400)

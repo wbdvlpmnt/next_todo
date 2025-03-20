@@ -1,12 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Todo } from "@/types/types";
+import React, { useContext, useEffect } from "react";
 import AppContext from "@/context/appContext";
 import { ListCard } from "./ListCard";
 
 export default function TodoList() {
   const context = useContext(AppContext);
   const todosContext = context?.todos;
-
 
   useEffect(() => {
     const fetchTodos = async () => {
@@ -29,7 +27,7 @@ export default function TodoList() {
     <div className="m-2 p-2">
       <ul className="flex flex-col gap-4  h-100 overflow-auto">
         {todosContext?.map((todo, index) => (
-          <ListCard todo={todo} index={index} />
+          <ListCard todo={todo} index={index} key={index} />
         ))}
       </ul>
     </div>

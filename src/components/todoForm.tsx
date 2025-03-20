@@ -1,16 +1,12 @@
 import { useContext, useEffect, useState } from "react";
 import Button from "./button";
 import AppContext from "@/context/appContext";
-import { Todo } from "@/types/types";
 
 export default function TodoForm() {
   const context = useContext(AppContext);
   const idToEdit = context?.idToEdit;
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-
-  // Local state to track the todo being edited
-  const [todoToEdit, setTodoToEdit] = useState<Todo | null>(null);
 
   useEffect(() => {
     console.log("editing", idToEdit);
@@ -24,13 +20,11 @@ export default function TodoForm() {
         console.log("setting title and description", todo);
         setTitle(todo.title);
         setDescription(todo.description);
-        setTodoToEdit(todo); // Track the todo being edited
       }
     } else {
       // Reset the form if no idToEdit is set
       setTitle("");
       setDescription("");
-      setTodoToEdit(null);
     }
   }, [idToEdit]); // Only re-run when idToEdit changes
 
