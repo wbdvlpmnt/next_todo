@@ -48,6 +48,10 @@ export default function TodoForm() {
       }
 
       const res = await networkRequest("/api/getTodos", "GET");
+      if (!res) {
+        console.error("Failed to fetch todos: response is undefined");
+        return;
+      }
       const data = await res.json();
 
       if (data) {

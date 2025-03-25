@@ -11,6 +11,9 @@ export default function TodoList() {
     const fetchTodos = async () => {
       try {
         const res = await networkRequest("/api/getTodos", "GET");
+        if (!res) {
+          throw new Error("Network request failed");
+        }
         const data = await res.json();
         context?.setTodos(data.todos); // Update the context
       } catch (error) {
