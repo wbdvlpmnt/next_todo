@@ -47,7 +47,8 @@ export default function TodoForm() {
         });
       }
 
-      const data = await networkRequest("/api/getTodos", "GET");
+      const res = await networkRequest("/api/getTodos", "GET");
+      const data = await res.json();
 
       if (data) {
         context?.setTodos(data.todos);

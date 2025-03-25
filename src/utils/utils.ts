@@ -5,8 +5,7 @@ export async function networkRequest(
 ) {
   let response;
   if (method === "GET") {
-    const res = await fetch(urlPath);
-    response = await res.json();
+    response = await fetch(urlPath);
   } else if (method === "POST") {
     if (body === undefined) {
       throw new Error("POST request must have a body");
@@ -19,7 +18,7 @@ export async function networkRequest(
       body: JSON.stringify(body),
     });
   }
-  if (!response && response.status !== 200 && response.status !== 201) {
+  if (!response || (response.status !== 200 && response.status !== 201)) {
     console.error("Network Request Error", {
       urlPath,
       method,

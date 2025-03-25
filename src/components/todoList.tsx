@@ -10,7 +10,8 @@ export default function TodoList() {
   useEffect(() => {
     const fetchTodos = async () => {
       try {
-        const data = await networkRequest("/api/getTodos", "GET");
+        const res = await networkRequest("/api/getTodos", "GET");
+        const data = await res.json();
         context?.setTodos(data.todos); // Update the context
       } catch (error) {
         console.error("Error fetching todos:", error);
