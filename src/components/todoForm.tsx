@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import Button from "./button";
 import AppContext from "@/context/appContext";
+import { networkRequest } from "../utils/utils";
 
 export default function TodoForm() {
   const context = useContext(AppContext);
@@ -8,68 +9,54 @@ export default function TodoForm() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
+  function updateFormWithItem(idToEdit: number) {
+    const todo = context?.todos.find((todo) => todo.id === idToEdit);
+    if (todo) {
+      setTitle(todo.title);
+      setDescription(todo.description);
+    }
+  }
+
+  function resetForm() {
+    setTitle("");
+    setDescription("");
+    context?.setIdToEdit(null);
+  }
+
   useEffect(() => {
-    console.log("editing", idToEdit);
-
     if (idToEdit) {
-      // Find the todo to edit only when idToEdit changes
-      const todo = context?.todos.find((todo) => todo.id === idToEdit);
-      console.log("todo", todo);
-
-      if (todo) {
-        console.log("setting title and description", todo);
-        setTitle(todo.title);
-        setDescription(todo.description);
-      }
+      updateFormWithItem(idToEdit);
     } else {
-      // Reset the form if no idToEdit is set
-      setTitle("");
-      setDescription("");
+      resetForm();
     }
   }, [idToEdit]); // Only re-run when idToEdit changes
 
+  //
+
   async function handleAddTodo() {
     try {
-      let response;
+      let response: Response | undefined;
       if (idToEdit) {
-        console.log("editing todo", idToEdit, title, description);
-        response = await fetch("/api/editTodos", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ id: idToEdit, title, description }),
+        response = await networkRequest("/api/editTodos", "POST", {
+          id: idToEdit,
+          title,
+          description,
         });
       } else {
-        response = await fetch("/api/saveTodos", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ title, description }),
+        response = await networkRequest("/api/saveTodos", "POST", {
+          title,
+          description,
         });
       }
 
-      if (!response.ok) {
-        console.error("Failed to add todo");
-        console.error(response);
-        return;
+      const data = await networkRequest("/api/getTodos", "GET");
+      if (data) {
+        context?.setTodos(data.todos);
       }
 
-      // Fetch the updated list of todos from the database
-      const fetchResponse = await fetch("/api/getTodos");
-      if (!fetchResponse.ok) {
-        throw new Error("Failed to fetch");
-      }
-      const data = await fetchResponse.json();
-      context?.setTodos(data.todos);
-
-      // Reset the form
-      setTitle("");
-      setDescription("");
-      context?.setIdToEdit(null);
+      resetForm();
     } catch (error) {
-      console.error("Error posting todo:", error);
+      console.error("Error Adding todo:", error);
     }
   }
 
