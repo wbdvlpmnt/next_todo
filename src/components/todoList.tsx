@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import AppContext from "@/context/appContext";
 import { ListCard } from "./ListCard";
+import { networkRequest } from "@/utils/utils";
 
 export default function TodoList() {
   const context = useContext(AppContext);
@@ -9,11 +10,7 @@ export default function TodoList() {
   useEffect(() => {
     const fetchTodos = async () => {
       try {
-        const response = await fetch("/api/getTodos");
-        if (!response.ok) {
-          throw new Error("Failed to fetch todos");
-        }
-        const data = await response.json();
+        const data = await networkRequest("/api/getTodos", "GET");
         context?.setTodos(data.todos); // Update the context
       } catch (error) {
         console.error("Error fetching todos:", error);

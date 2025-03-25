@@ -31,8 +31,6 @@ export default function TodoForm() {
     }
   }, [idToEdit]); // Only re-run when idToEdit changes
 
-  //
-
   async function handleAddTodo() {
     try {
       let response: Response | undefined;
@@ -50,6 +48,7 @@ export default function TodoForm() {
       }
 
       const data = await networkRequest("/api/getTodos", "GET");
+
       if (data) {
         context?.setTodos(data.todos);
       }
