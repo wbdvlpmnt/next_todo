@@ -2,6 +2,7 @@ import { Todo } from "@/types/types";
 import Button from "./button";
 import AppContext from "@/context/appContext";
 import { useContext } from "react";
+import { networkRequest } from "@/utils/utils";
 
 export function ListCard({
   todo,
@@ -29,20 +30,10 @@ export function ListCard({
       return;
     }
     try {
-      const response = await fetch("/api/deleteTodos", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to delete todo");
+      const response = await networkRequest("/api/deleteTodos", "POST", { id });
+      if (response && response.status == 200) {
+        context?.setTodos((prev) => prev.filter((todo) => todo.id !== id));
       }
-
-      console.log("Todo deleted successfully");
-      context?.setTodos((prev) => prev.filter((todo) => todo.id !== id));
     } catch (error) {
       console.error("Error deleting todo:", error);
     }
